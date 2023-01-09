@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.section {
+  width: 40%;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 70%;
+}
+
+.autocomplete {
+  width: 30%;
+  min-width: 120px;
+}
+
+.input~.autocomplete {
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .section {
+    width: 90%;
+  }
+}
