@@ -10,30 +10,45 @@ import "./App.css";
 function App() {
   const [rates, setRates] = useState([]);
   const [currency, setCurrency] = useState([]);
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("UAH");
-  const [amount, setAmount] = useState(1);
-  const [convertedAmount, setConvertedAmount] = useState(0);
-  const data = {
-    from: { currency: "usd", amount: 1 },
-    to: { currency: "uah", amount: 0 },
-  };
-  console.log(currency);
+  const [conversionData, setConversionData] = useState({
+    fromAmount: 0,
+    fromCurrency: "USD",
+    toAmount: 0,
+    toCurrency: "UAH",
+  });
 
   useEffect(() => {
     getAllCurrency().then(setCurrency);
     getLatestRates().then(setRates);
   }, []);
-  //useEffect ((on params)=> { convertAmount(fromCurrency, toCurrency, currentAmount)}, [state])
 
-  const handleChange = (event, type) => {
-    const currentAmount = event.target.value;
+  const handleChange = (key, value) => {
+    const newState = { ...conversionData, [key]: value };
+    // setConversionData({ ...conversionData, [key]: value });
 
-    setAmount(currentAmount);
-
-    convertAmount(fromCurrency, toCurrency, currentAmount).then(
-      setConvertedAmount
-    );
+    if (key === "fromAmount" || key === "fromCurrency") {
+      convertAmount(
+        newState.fromCurrency,
+        newState.toCurrency,
+        newState.fromAmount
+      ).then((data) => {
+        setConversionData({
+          ...newState,
+          toAmount: data,
+        });
+      });
+    } else {
+      convertAmount(
+        newState.toCurrency,
+        newState.fromCurrency,
+        newState.toAmount
+      ).then((data) => {
+        setConversionData({
+          ...newState,
+          fromAmount: data,
+        });
+      });
+    }
   };
 
   return (
@@ -42,11 +57,8 @@ function App() {
       <h1>Currency converter</h1>
       <InputsContainer
         currency={currency}
-        amount={amount}
-        convertedAmount={convertedAmount}
-        setFromCurrency={setFromCurrency}
-        setToCurrency={setToCurrency}
-        handleChange={handleChange}
+        conversionData={conversionData}
+        convertAmount={handleChange}
       />
     </div>
   );
