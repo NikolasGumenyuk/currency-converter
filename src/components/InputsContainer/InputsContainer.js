@@ -19,8 +19,8 @@ const InputsContainer = ({ currency, conversionData, convertAmount }) => {
           }
           type="number"
           variant="outlined"
-          label="Start Amount"
           name="fromAmount"
+          InputLabelProps={{ shrink: false }}
         />
         <Autocomplete
           className={styles.autocomplete}
@@ -44,7 +44,6 @@ const InputsContainer = ({ currency, conversionData, convertAmount }) => {
           }
           type="number"
           variant="outlined"
-          label="Converted Amount"
           name="toAmount"
         />
         <Autocomplete
